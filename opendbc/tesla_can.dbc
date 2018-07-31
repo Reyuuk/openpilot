@@ -60,6 +60,9 @@ VAL_TABLE_ DI_speedUnits 1 "DI_SPEED_KPH" 0 "DI_SPEED_MPH" ;
 VAL_TABLE_ DI_state 4 "DI_STATE_ENABLE" 3 "DI_STATE_FAULT" 2 "DI_STATE_CLEAR_FAULT" 1 "DI_STATE_STANDBY" 0 "DI_STATE_PREAUTH" ;
 VAL_TABLE_ DI_velocityEstimatorState 4 "VE_STATE_BACKUP_MOTOR" 3 "VE_STATE_BACKUP_WHEELS_B" 2 "VE_STATE_BACKUP_WHEELS_A" 1 "VE_STATE_WHEELS_NORMAL" 0 "VE_STATE_NOT_INITIALIZED" ;
 
+BO_ 513 SDM1: 5 SDM 
+ SG_ SDM_bucklePassengerStatus : 3|2@0+ (1,0) [0|3] "" OCS,GTW
+ SG_ SDM_buckleDriverStatus : 5|2@0+ (1,0) [0|3] "" OCS,GTW
 
 BO_ 1160 DAS_steeringControl: 4 NEO
  SG_ DAS_steeringControlType : 23|2@0+ (1,0) [0|0] "" EPAS
@@ -98,7 +101,8 @@ BO_ 3 STW_ANGL_STAT: 8 STW
  SG_ MC_STW_ANGL_STAT : 55|4@0+ (1,0) [0|15] ""  NEO
  SG_ CRC_STW_ANGL_STAT : 63|8@0+ (1,0) [0|255] ""  NEO
 
-BO_ 14 STW_ANGLHP_STAT: 8 STW 
+BO_ 14 STW_ANGLHP_STAT: 8 STW
+ 
  SG_ StW_AnglHP : 5|14@0+ (0.1,-819.2) [-819.2|819] "deg"  NEO
  SG_ StW_AnglHP_Spd : 21|14@0+ (0.5,-4096) [-4096|4095.5] "deg/s"  NEO
  SG_ StW_AnglHP_Sens_Stat : 33|2@0+ (1,0) [0|0] ""  NEO
@@ -147,7 +151,10 @@ BO_ 309 ESP_135h: 5 ESP
  SG_ ESP_espOffLamp : 31|1@0+ (1,0) [-1|2] ""  NEO
  SG_ ESP_stabilityControlSts : 14|3@0+ (1,0) [6|7] ""  NEO
  SG_ ESP_tcLampFlash : 5|1@0+ (1,0) [-1|2] ""  NEO
- SG_ ESP_tcOffLamp : 15|1@0+ (1,0) [0|1] ""  NEOBO_ 341 ESP_B: 8 ESP SG_ ESP_BChecksum : 39|8@0+ (1,0) [0|255] ""  NEO,EPAS
+ SG_ ESP_tcOffLamp : 15|1@0+ (1,0) [0|1] ""  NEO
+
+BO_ 341 ESP_B: 8 ESP
+ SG_ ESP_BChecksum : 39|8@0+ (1,0) [0|255] ""  NEO,EPAS
  SG_ ESP_BCounter : 62|4@0+ (1,0) [1|15] ""  NEO,EPAS
  SG_ ESP_vehicleSpeed : 47|16@0+ (0.00999999978,0) [0|0] "kph"  NEO,EPAS
  SG_ ESP_vehicleSpeedQF : 57|2@0+ (1,0) [1|2] ""  NEO,EPAS

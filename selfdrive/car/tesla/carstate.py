@@ -78,7 +78,8 @@ def get_can_signals(CP):
       ("TurnIndLvr_Stat", "STW_ACTN_RQ", 0),
       ("DI_motorRPM", "DI_torque1", 0),
       ("DI_speedUnits", "DI_state", 0),
-      
+      ("SDM1", "SDM_buckleDriverStatus", 0),
+
   ]
 
   checks = [
@@ -174,9 +175,8 @@ class CarState(object):
     # ******************* parse out can *******************
     self.door_all_closed = not any([cp.vl["GTW_carState"]['DOOR_STATE_FL'], cp.vl["GTW_carState"]['DOOR_STATE_FR'],
                                cp.vl["GTW_carState"]['DOOR_STATE_RL'], cp.vl["GTW_carState"]['DOOR_STATE_RR']])  #JCT
-    #self.seatbelt = cp.vl["GTW_status"]['GTW_driverPresent']
-    self.seatbelt = 1 #RSM
-
+    self.seatbelt = cp.vl["SDM1"]["SDM_buckleDriverStatus"]
+    
     # 2 = temporary 3= TBD 4 = temporary, hit a bump 5 (permanent) 6 = temporary 7 (permanent)
     # TODO: Use values from DBC to parse this field
     self.steer_error = epas_cp.vl["EPAS_sysStatus"]['EPAS_steeringFault'] == 1
