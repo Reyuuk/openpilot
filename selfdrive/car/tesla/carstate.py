@@ -3,6 +3,7 @@ from common.kalman.simple_kalman import KF1D
 from selfdrive.can.parser import CANParser
 from selfdrive.config import Conversions as CV
 from selfdrive.car.tesla.values import CAR, CruiseButtons, DBC
+from selfdrive.car.tesla.ACC_module import ACCMode
 from selfdrive.car.modules.UIBT_module import UIButtons,UIButton
 import numpy as np
 from ctypes import create_string_buffer
@@ -304,7 +305,7 @@ class CarState(object):
     if self.pedal_hardware_present:
       btns.append(UIButton("pedal","PDL",0,"Longit",1))
     else:
-      btns.append(UIButton("acc","ACC",0,"Mod OP",1))
+      btns.append(UIButton("acc","ACC",0,ACCMode.FOLLOW,1))
     btns.append(UIButton("steer","STR",0,"",2))
     btns.append(UIButton("brake","BRK",1,"",3))
     btns.append(UIButton("msg","MSG",1,"",4))
@@ -326,7 +327,7 @@ class CarState(object):
       if btn:
         btn.btn_name = "acc"
         btn.btn_label = "ACC"
-        btn.btn_label2 = "Mod OP"
+        btn.btn_label2 = ACCMode.FOLLOW
         btn.btn_status = 1
     self.update_ui_buttons(1,1)    
 
@@ -334,10 +335,10 @@ class CarState(object):
     if self.cstm_btns.btns[id].btn_status > 0:
       if (id == 1) and (btn_status == 0) and self.cstm_btns.btns[id].btn_name=="acc":
           #don't change status, just model
-          if (self.cstm_btns.btns[id].btn_label2 == "Mod OP"):
-              self.cstm_btns.btns[id].btn_label2 = "Mod JJ"
+          if (self.cstm_btns.btns[id].btn_label2 == ACCMode.FOLLOW):
+              self.cstm_btns.btns[id].btn_label2 = ACCMode.AUTO
           else:
-              self.cstm_btns.btns[id].btn_label2 = "Mod OP"
+              self.cstm_btns.btns[id].btn_label2 = ACCMode.FOLLOW
           self.cstm_btns.hasChanges = True
       elif (id == 1) and (btn_status == 0) and self.cstm_btns.btns[id].btn_name=="pedal":
           #don't change status, just model
