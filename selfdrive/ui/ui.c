@@ -1049,7 +1049,7 @@ static void ui_draw_vision_footer(UIState *s) {
   nvgRect(s->vg, ui_viz_rx, footer_y, ui_viz_rw, footer_h);
 
   // Driver Monitoring
-  ui_draw_vision_face(s);
+  //ui_draw_vision_face(s);
 }
 
 static void ui_draw_vision_alert(UIState *s, int va_size, int va_color,
@@ -1823,17 +1823,18 @@ int main() {
     bool should_swap = false;
     pthread_mutex_lock(&s->lock);
 
-    if (EON) {
+	  set_brightness(s, 1);
+    //if (EON) {
       // light sensor is only exposed on EONs
 
-      float clipped_brightness = (s->light_sensor*BRIGHTNESS_M) + BRIGHTNESS_B;
-      if (clipped_brightness > 255) clipped_brightness = 255;
-      smooth_brightness = clipped_brightness * 0.01 + smooth_brightness * 0.99;
-      set_brightness(s, (int)smooth_brightness);
-    } else {
-      // compromise for bright and dark envs
-      set_brightness(s, NEO_BRIGHTNESS);
-    }
+    //  float clipped_brightness = (s->light_sensor*BRIGHTNESS_M) + BRIGHTNESS_B;
+    //  if (clipped_brightness > 255) clipped_brightness = 255;
+    //  smooth_brightness = clipped_brightness * 0.01 + smooth_brightness * 0.99;
+    //  set_brightness(s, (int)smooth_brightness);
+    //} else {
+    //  // compromise for bright and dark envs
+    //  set_brightness(s, NEO_BRIGHTNESS);
+    //}
 
     ui_update(s);
     //BB Update our cereal polls
