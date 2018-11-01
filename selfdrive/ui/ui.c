@@ -1823,18 +1823,7 @@ int main() {
     bool should_swap = false;
     pthread_mutex_lock(&s->lock);
 
-	  set_brightness(s, 1);
-    //if (EON) {
-      // light sensor is only exposed on EONs
-
-    //  float clipped_brightness = (s->light_sensor*BRIGHTNESS_M) + BRIGHTNESS_B;
-    //  if (clipped_brightness > 255) clipped_brightness = 255;
-    //  smooth_brightness = clipped_brightness * 0.01 + smooth_brightness * 0.99;
-    //  set_brightness(s, (int)smooth_brightness);
-    //} else {
-    //  // compromise for bright and dark envs
-    //  set_brightness(s, NEO_BRIGHTNESS);
-    //}
+    set_brightness(s, 1);
 
     ui_update(s);
     //BB Update our cereal polls
