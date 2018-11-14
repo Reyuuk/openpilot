@@ -669,7 +669,7 @@ int main() {
       puth(can_tx1_q.r_ptr); puts(" "); puth(can_tx1_q.w_ptr); puts("  ");
       puth(can_tx2_q.r_ptr); puts(" "); puth(can_tx2_q.w_ptr); puts("\n");
     #endif
-
+/*
     // set green LED to be controls allowed
     set_led(LED_GREEN, controls_allowed);
 
@@ -686,7 +686,7 @@ int main() {
         }
       }
     }
-
+*/
     // turn off the blue LED, turned on by CAN
     #ifdef PANDA
       set_led(LED_BLUE, 0);
