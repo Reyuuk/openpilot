@@ -799,13 +799,13 @@ static void draw_frame(UIState *s) {
 
   glActiveTexture(GL_TEXTURE0);
   //BB added to suppress video printing
-  if (s->b.tri_state_switch != 2) {
-    if (s->scene.frontview && s->cur_vision_front_idx >= 0) {
-      glBindTexture(GL_TEXTURE_2D, s->frame_front_texs[s->cur_vision_front_idx]);
-    } else if (!scene->frontview && s->cur_vision_idx >= 0) {
-      glBindTexture(GL_TEXTURE_2D, s->frame_texs[s->cur_vision_idx]);
-    }
-  }
+  //if (s->b.tri_state_switch != 2) {
+  //  if (s->scene.frontview && s->cur_vision_front_idx >= 0) {
+  //    glBindTexture(GL_TEXTURE_2D, s->frame_front_texs[s->cur_vision_front_idx]);
+  //  } else if (!scene->frontview && s->cur_vision_idx >= 0) {
+  //    glBindTexture(GL_TEXTURE_2D, s->frame_texs[s->cur_vision_idx]);
+  //  }
+  //}
   //BB end  
 
   glUseProgram(s->frame_program);
@@ -1828,6 +1828,16 @@ int main() {
     pthread_mutex_lock(&s->lock);
 
     set_brightness(s, 1);
+    if (s->b.tri_state_switch == 2) {
+      set_brightness(s, 1);    
+    } else if (s->b.tri_state_switch == 1) {
+      set_brightness(s, 0);
+    } else {
+      float clipped_brightness = (s->light_sensor*BRIGHTNESS_M) + BRIGHTNESS_B;
+      if (clipped_brightness > 255) clipped_brightness = 255;
+      smooth_brightness = clipped_brightness * 0.01 + smooth_brightness * 0.99;
+      set_brightness(s, (int)smooth_brightness);
+    }
 
     ui_update(s);
     //BB Update our cereal polls
