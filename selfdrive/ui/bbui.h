@@ -76,51 +76,6 @@ void bb_ui_draw_vision_alert( UIState *s, int va_size, int va_color,
 
 
 
-void bb_ui_draw_car(  UIState *s) {
-  // replaces the draw_chevron function when button in mid position
-  //static void draw_chevron(UIState *s, float x_in, float y_in, float sz,
-  //                        NVGcolor fillColor, NVGcolor glowColor) {
-  if (!s->scene.lead_status) {
-    //no lead car to draw
-    return;
-  }
-  const UIScene *scene = &s->scene;
-  float x_in = scene->lead_d_rel+2.7;
-  float y_in = scene->lead_y_rel;
-  float sz = 1.0;
-
-  nvgSave(s->vg);
-  nvgTranslate(s->vg, 240.0f, 0.0);
-  nvgTranslate(s->vg, -1440.0f / 2, -1080.0f / 2);
-  nvgScale(s->vg, 2.0, 2.0);
-  nvgScale(s->vg, 1440.0f / s->rgb_width, 1080.0f / s->rgb_height);
-
-  const vec4 p_car_space = (vec4){{x_in, y_in, 0., 1.}};
-  const vec3 p_full_frame = bb_car_space_to_full_frame(s, p_car_space);
-
-  float x = p_full_frame.v[0];
-  float y = p_full_frame.v[1];
-
-  // glow
-
-  float bbsz =0.1*  0.1 + 0.6 * (180-x_in*3.3-20)/180;
-  if (bbsz < 0.1) bbsz = 0.1;
-  if (bbsz > 0.6) bbsz = 0.6;
-  float car_alpha = .8;
-  float car_w = 750 * bbsz;
-  float car_h = 531 * bbsz;
-  float car_y = y - car_h/2;
-  float car_x = x - car_w/2;
-  
-  nvgBeginPath(s->vg);
-  NVGpaint imgPaint = nvgImagePattern(s->vg, car_x, car_y,
-  car_w, car_h, 0, s->b.img_car, car_alpha);
-  nvgRect(s->vg, car_x, car_y, car_w, car_h);
-  nvgFillPaint(s->vg, imgPaint);
-  nvgFill(s->vg);
-  nvgRestore(s->vg);
-}
-
 void bb_draw_lane_fill ( UIState *s) {
 
   const UIScene *scene = &s->scene;
@@ -804,7 +759,6 @@ void bb_ui_draw_UI( UIState *s) {
     //bb_draw_buttons(s);
     //bb_ui_draw_custom_alert(s);
     //bb_ui_draw_logo(s);
-    //bb_ui_draw_car(s);
 	 }
 	 if (s->b.tri_state_switch ==3) {
 //	 	ui_draw_vision_grid(s);
