@@ -574,33 +574,28 @@ static void draw_chevron(UIState *s, float x_in, float y_in, float sz,
   nvgBeginPath(s->vg);
   float g_xo = sz/5;
   float g_yo = sz/10;
-  //BB added for printing the car
-  if (s->b.tri_state_switch == 2) {
-    nvgRestore(s->vg);
-    bb_ui_draw_car(s);
-  } else {
-    if (x >= 0 && y >= 0.) {
-        nvgMoveTo(s->vg, x+(sz*1.35)+g_xo, y+sz+g_yo);
-        nvgLineTo(s->vg, x, y-g_xo);
-        nvgLineTo(s->vg, x-(sz*1.35)-g_xo, y+sz+g_yo);
-        nvgLineTo(s->vg, x+(sz*1.35)+g_xo, y+sz+g_yo);
-        nvgClosePath(s->vg);
-    }
-    nvgFillColor(s->vg, glowColor);
-    nvgFill(s->vg);
-
-    // chevron
-    nvgBeginPath(s->vg);
-    if (x >= 0 && y >= 0.) {
-        nvgMoveTo(s->vg, x+(sz*1.25), y+sz);
-        nvgLineTo(s->vg, x, y);
-        nvgLineTo(s->vg, x-(sz*1.25), y+sz);
-        nvgLineTo(s->vg, x+(sz*1.25), y+sz);
-        nvgClosePath(s->vg);
-    }
-    nvgFillColor(s->vg, fillColor);
-    nvgFill(s->vg);
+  
+  if (x >= 0 && y >= 0.) {
+      nvgMoveTo(s->vg, x+(sz*1.35)+g_xo, y+sz+g_yo);
+      nvgLineTo(s->vg, x, y-g_xo);
+      nvgLineTo(s->vg, x-(sz*1.35)-g_xo, y+sz+g_yo);
+      nvgLineTo(s->vg, x+(sz*1.35)+g_xo, y+sz+g_yo);
+      nvgClosePath(s->vg);
   }
+  nvgFillColor(s->vg, glowColor);
+  nvgFill(s->vg);
+
+  // chevron
+  nvgBeginPath(s->vg);
+  if (x >= 0 && y >= 0.) {
+      nvgMoveTo(s->vg, x+(sz*1.25), y+sz);
+      nvgLineTo(s->vg, x, y);
+      nvgLineTo(s->vg, x-(sz*1.25), y+sz);
+      nvgLineTo(s->vg, x+(sz*1.25), y+sz);
+      nvgClosePath(s->vg);
+  }
+  nvgFillColor(s->vg, fillColor);
+  nvgFill(s->vg);
   nvgRestore(s->vg);
 }
 
@@ -798,15 +793,11 @@ static void draw_frame(UIState *s) {
   };
 
   glActiveTexture(GL_TEXTURE0);
-  //BB added to suppress video printing
-  //if (s->b.tri_state_switch != 2) {
-  //  if (s->scene.frontview && s->cur_vision_front_idx >= 0) {
-  //    glBindTexture(GL_TEXTURE_2D, s->frame_front_texs[s->cur_vision_front_idx]);
-  //  } else if (!scene->frontview && s->cur_vision_idx >= 0) {
-  //    glBindTexture(GL_TEXTURE_2D, s->frame_texs[s->cur_vision_idx]);
-  //  }
-  //}
-  //BB end  
+  if (s->scene.frontview && s->cur_vision_front_idx >= 0) {
+    glBindTexture(GL_TEXTURE_2D, s->frame_front_texs[s->cur_vision_front_idx]);
+  } else if (!scene->frontview && s->cur_vision_idx >= 0) {
+    glBindTexture(GL_TEXTURE_2D, s->frame_texs[s->cur_vision_idx]);
+  } 
 
   glUseProgram(s->frame_program);
 
@@ -846,7 +837,7 @@ static void ui_draw_vision_lanes(UIState *s) {
 
   if (scene->engaged) {
     // Draw MPC path when engaged
-    ui_draw_track(s, true);
+    //ui_draw_track(s, true);
   }
 }
 
@@ -1037,9 +1028,9 @@ static void ui_draw_vision_header(UIState *s) {
   nvgRect(s->vg, ui_viz_rx, box_y, ui_viz_rw, header_h);
   nvgFill(s->vg);
 
-  ui_draw_vision_maxspeed(s);
+  //ui_draw_vision_maxspeed(s);
   ui_draw_vision_speed(s);
-  ui_draw_vision_wheel(s);
+  //ui_draw_vision_wheel(s);
 }
 
 static void ui_draw_vision_footer(UIState *s) {
@@ -1827,10 +1818,10 @@ int main() {
     bool should_swap = false;
     pthread_mutex_lock(&s->lock);
 
-    set_brightness(s, 1);
-    if (s->b.tri_state_switch == 2) {
+    //set_brightness(s, 1);
+    if (s->b.tri_state_switch == 1) {
       set_brightness(s, 1);    
-    } else if (s->b.tri_state_switch == 1) {
+    } else if (s->b.tri_state_switch == 2) {
       set_brightness(s, 0);
     } else {
       float clipped_brightness = (s->light_sensor*BRIGHTNESS_M) + BRIGHTNESS_B;
