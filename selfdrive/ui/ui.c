@@ -1148,7 +1148,7 @@ static void ui_draw_vision(UIState *s) {
 
   if (s->scene.alert_size != ALERTSIZE_NONE) {
     // Controls Alerts
-    ui_draw_vision_alert(s, s->scene.alert_size, s->status,
+    //ui_draw_vision_alert(s, s->scene.alert_size, s->status,
                             s->scene.alert_text1, s->scene.alert_text2);
   } else {
     ui_draw_vision_footer(s);
@@ -1818,7 +1818,7 @@ int main() {
     bool should_swap = false;
     pthread_mutex_lock(&s->lock);
 
-    //set_brightness(s, 1);
+    /*set_brightness(s, 1);
     if (s->b.tri_state_switch == 1) {
       set_brightness(s, 1);    
     } else if (s->b.tri_state_switch == 2) {
@@ -1828,7 +1828,7 @@ int main() {
       if (clipped_brightness > 255) clipped_brightness = 255;
       smooth_brightness = clipped_brightness * 0.01 + smooth_brightness * 0.99;
       set_brightness(s, (int)smooth_brightness);
-    }
+    }*/
 
     ui_update(s);
     //BB Update our cereal polls
@@ -1853,6 +1853,17 @@ int main() {
     if (s->awake) {
       ui_draw(s);
       glFinish();
+      //set brightness
+      if (s->b.tri_state_switch == 1) {
+        float clipped_brightness = (s->light_sensor*BRIGHTNESS_M) + BRIGHTNESS_B;
+        if (clipped_brightness > 255) clipped_brightness = 255;
+        smooth_brightness = clipped_brightness * 0.01 + smooth_brightness * 0.99;
+        set_brightness(s, (int)smooth_brightness);  
+      } else if (s->b.tri_state_switch == 2) {
+        set_brightness(s, 0);
+      } else {
+        set_brightness(s, 1);
+      }
       should_swap = true;
     }
 
