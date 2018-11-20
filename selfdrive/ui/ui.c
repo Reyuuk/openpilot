@@ -1145,14 +1145,14 @@ static void ui_draw_vision(UIState *s) {
 
   // Set Speed, Current Speed, Status/Events
   ui_draw_vision_header(s);
-
-  if (s->scene.alert_size != ALERTSIZE_NONE) {
+  ui_draw_vision_footer(s);
+  /*if (s->scene.alert_size != ALERTSIZE_NONE) {
     // Controls Alerts
-    //ui_draw_vision_alert(s, s->scene.alert_size, s->status,
+    ui_draw_vision_alert(s, s->scene.alert_size, s->status,
                             s->scene.alert_text1, s->scene.alert_text2);
   } else {
     ui_draw_vision_footer(s);
-  }
+  }*/
 
 
   nvgEndFrame(s->vg);
